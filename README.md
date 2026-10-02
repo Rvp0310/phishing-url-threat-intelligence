@@ -1,10 +1,10 @@
 # Phishing URL Detection and Browser Blocking System
 
-A threat-intelligence based phishing URL detection system that uses
-PhishTank data, Bloom Filter, Flask API and a Chrome/Edge browser extension.
+A threat-intelligence-based phishing URL detection system that uses PhishTank data, a Bloom Filter, a Flask API, and a Chrome/Edge browser extension to detect and block known phishing URLs.
 
 ## Architecture
 
+```text
 PhishTank Feed
       ↓
 Web Data Collector
@@ -17,36 +17,54 @@ Flask API
       ↓
 Browser Extension
       ↓
-URL Detection → Block / Allow
+URL Detection
+    ↙     ↘
+ Safe    Phishing
+  ↓         ↓
+Allow     Block
+```
 
 ## Technologies Used
 
-- Python
-- Pandas
-- Bloom Filter
-- Flask
-- JavaScript
-- Chrome/Edge Extension
-- PhishTank
+* Python
+* Pandas
+* Bloom Filter
+* Flask
+* JavaScript
+* Chrome/Edge Extension
+* PhishTank
 
 ## Installation
 
+Create and activate a virtual environment:
+
 ```bash
 python -m venv venv
+```
+
+On Windows:
+
+```bash
 venv\Scripts\activate
+```
+
+Install the required dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
 ## Running the Project
 
-### 1. Start the Crawler
+### 1. Start the Web Data Collector
 
-Run the crawler to download the phishing threat-intelligence dataset:
+Run the web data collector:
 
 ```bash
-python crawler.py
+python web_crawler.py
 ```
 
-The crawler updates the local phishing dataset and target mapping.
+It downloads the phishing threat-intelligence dataset and updates the local phishing URL data.
 
 ### 2. Start the Flask API
 
@@ -75,21 +93,25 @@ If the URL is detected as phishing, the extension redirects the browser to the b
 
 ## Project Components
 
-### `crawler.py`
+### `web_crawler.py`
 
-Downloads the phishing threat-intelligence dataset and updates the local dataset and target mapping files.
+Collects phishing URL data from the threat-intelligence source and updates the local dataset.
 
 ### `bloom_filter.py`
 
-Creates the Bloom Filter and exact URL set used for efficient URL checking.
+Creates the Bloom Filter and exact URL set used for efficient phishing URL checking.
 
 ### `api.py`
 
 Provides the `/check` endpoint used by the browser extension to check URLs.
 
+### `target_mapper.py`
+
+Maps detected phishing URLs to their targeted organization or service using the threat-intelligence dataset and provides the target information for the browser blocking page.
+
 ### `extension/`
 
-Contains the browser extension responsible for monitoring navigation, checking URLs through the Flask API, and redirecting detected phishing URLs to the blocking page.
+Contains the browser extension responsible for monitoring browser navigation, checking URLs through the Flask API, and redirecting detected phishing URLs to the blocking page.
 
 ## Important Note
 
